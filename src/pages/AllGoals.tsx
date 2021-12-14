@@ -15,7 +15,6 @@ const AllGoals: React.FC = () => {
         return updatedGoalArray;
     }, []);
 
-    console.log(goals);
 
     return (
         <IonPage>
