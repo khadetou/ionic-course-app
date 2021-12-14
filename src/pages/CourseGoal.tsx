@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import { IonAlert, IonBackButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonList, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react'
 import { COURSE_DATA } from './Courses';
 import { useParams } from 'react-router';
@@ -6,16 +6,20 @@ import { addOutline } from 'ionicons/icons';
 import { isPlatform } from '@ionic/core';
 import EditModals from '../components/EditModals';
 import EditGlobalItem from '../components/EditGlobalItem';
-
+import CourseContext from '../data/course-context';
 
 const CourseGoal: React.FC = () => {
     const [startDeleting, setStartDeleting] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+
+    const { courses } = useContext(CourseContext);
+
     const [selectedGoal, setSelectedGoal] = useState<null | any>(null);
+
     const slidingOptionsRef = useRef<HTMLIonItemSlidingElement>(null);
     const seletedCourseId = useParams<{ courseId: string }>().courseId;
-    const selectedCourse = COURSE_DATA.find(course => course.id === seletedCourseId);
+    const selectedCourse = courses.find(course => course.id === seletedCourseId);
     const startDeleteHanlder = () => {
         setStartDeleting(true);
     }
