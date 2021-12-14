@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { IonAlert, IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react'
+import { IonAlert, IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react'
 import { COURSE_DATA } from './Courses';
 import { useParams } from 'react-router';
 import { create, trash, addOutline } from 'ionicons/icons';
@@ -7,6 +7,7 @@ import { isPlatform } from '@ionic/core';
 
 const CourseGoal: React.FC = () => {
     const [startDeleting, setStartDeleting] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
     const seletedCourseId = useParams<{ courseId: string }>().courseId;
     const selectedCourse = COURSE_DATA.find(course => course.id === seletedCourseId);
     const startDeleteHanlder = () => {
@@ -14,7 +15,8 @@ const CourseGoal: React.FC = () => {
     }
     const deleteGoalHanlder = () => {
         setStartDeleting(false);
-        console.log("Deleting ...")
+        console.log("Deleting ...");
+        setToastMessage('Goal Deleted!');
     }
     const startEditGlobalHandler = (event: React.MouseEvent) => {
         event.stopPropagation();
@@ -26,6 +28,7 @@ const CourseGoal: React.FC = () => {
     }
     return (
         <React.Fragment>
+            <IonToast isOpen={!!toastMessage} message={toastMessage} duration={2000} onDidDismiss={() => { setToastMessage("") }} />
             <IonAlert
                 isOpen={startDeleting}
                 header="Are you sure?"
