@@ -26,6 +26,7 @@ import "./theme/theme.css";
 import Filter from './pages/Filter';
 import CourseTab from './pages/CourseTab';
 import SlideDrawer from './components/SlideDrawer';
+import CourseContextProvider from './data/CourseContextProvider';
 
 
 setupIonicReact();
@@ -37,15 +38,17 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <SlideDrawer />
-        <IonRouterOutlet id="main">
-          <Route path="/filter" exact>
-            <Filter />
-          </Route>
-          <Route path="/courses">
-            <CourseTab />
-          </Route>
-          <Redirect path="/" to="/courses/list" exact />
-        </IonRouterOutlet>
+        <CourseContextProvider>
+          <IonRouterOutlet id="main">
+            <Route path="/filter" exact>
+              <Filter />
+            </Route>
+            <Route path="/courses">
+              <CourseTab />
+            </Route>
+            <Redirect path="/" to="/courses/list" exact />
+          </IonRouterOutlet>
+        </CourseContextProvider>
       </IonReactRouter>
     </IonApp>
   );
