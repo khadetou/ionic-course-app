@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
-import { IonAlert, IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react'
+import React, { useState, useRef } from 'react'
+import { IonAlert, IonBackButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react'
 import { COURSE_DATA } from './Courses';
 import { useParams } from 'react-router';
 import { create, trash, addOutline } from 'ionicons/icons';
 import { isPlatform } from '@ionic/core';
 import EditModals from '../components/EditModals';
-import { KeyObjectType } from 'crypto';
+
 
 const CourseGoal: React.FC = () => {
     const [startDeleting, setStartDeleting] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [selectedGoal, setSelectedGoal] = useState<null | any>(null);
+    const slidingOptionsRef = useRef<HTMLIonItemSlidingElement>(null);
     const seletedCourseId = useParams<{ courseId: string }>().courseId;
     const selectedCourse = COURSE_DATA.find(course => course.id === seletedCourseId);
     const startDeleteHanlder = () => {
@@ -25,6 +26,7 @@ const CourseGoal: React.FC = () => {
     const startEditGlobalHandler = (goalId: string, event: React.MouseEvent) => {
         event.stopPropagation();
         const goal = selectedCourse?.goals.find(goal => goal.id === goalId);
+        slidingOptionsRef.current?.closeOpened();
         if (!goal) return;
         setIsEditing(true);
         setSelectedGoal(goal);
@@ -77,7 +79,7 @@ const CourseGoal: React.FC = () => {
                     {selectedCourse && (
                         <IonList>
                             {selectedCourse.goals.map(goal => (
-                                <IonItemSliding key={goal.id}>
+                                <IonItemSliding key={goal.id} ref={slidingOptionsRef}>
                                     <IonItemOptions side="start">
                                         <IonItemOption onClick={startDeleteHanlder} color="danger">
                                             <IonIcon slot="icon-only" icon={trash} />
