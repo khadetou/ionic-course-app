@@ -5,7 +5,7 @@ import { Redirect, Route, Switch } from 'react-router';
 import AllGoals from './AllGoals';
 import CourseGoal from './CourseGoal';
 import Courses from './Courses';
-import Filter from './Filter';
+
 
 const CourseTab: React.FC = () => {
     return (
