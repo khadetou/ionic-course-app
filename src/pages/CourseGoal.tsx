@@ -1,8 +1,8 @@
 import React from 'react'
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react'
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react'
 import { COURSE_DATA } from './Courses';
 import { useParams } from 'react-router';
-import { create } from 'ionicons/icons';
+import { create, trash } from 'ionicons/icons';
 
 const CourseGoal: React.FC = () => {
     const seletedCourseId = useParams<{ courseId: string }>().courseId;
@@ -29,12 +29,27 @@ const CourseGoal: React.FC = () => {
                 {selectedCourse && (
                     <IonList>
                         {selectedCourse.goals.map(goal => (
-                            <IonItem key={goal.id} lines="full" button onClick={deleteItemHandler}>
-                                <IonLabel>{goal.text}</IonLabel>
-                                <IonButton slot="end" onClick={startEditGlobalHandler}>
+                            <IonItemSliding key={goal.id}>
+                                <IonItemOptions side="start">
+                                    <IonItemOption onClick={deleteItemHandler} color="danger">
+                                        <IonIcon slot="icon-only" icon={trash} />
+                                    </IonItemOption>
+                                </IonItemOptions>
+                                <IonItem lines="full"
+                                // button 
+                                // onClick={deleteItemHandler}
+                                >
+                                    <IonLabel>{goal.text}</IonLabel>
+                                    {/* <IonButton slot="end" onClick={startEditGlobalHandler}>
                                     <IonIcon slot="icon-only" icon={create} />
-                                </IonButton>
-                            </IonItem>
+                                </IonButton> */}
+                                </IonItem>
+                                <IonItemOptions side="end">
+                                    <IonItemOption onClick={startEditGlobalHandler}>
+                                        <IonIcon slot="icon-only" icon={create} />
+                                    </IonItemOption>
+                                </IonItemOptions>
+                            </IonItemSliding>
                         ))}
                     </IonList>
                 )}
