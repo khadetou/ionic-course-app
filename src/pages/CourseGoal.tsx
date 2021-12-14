@@ -31,7 +31,7 @@ const CourseGoal: React.FC = () => {
             <IonToast isOpen={!!toastMessage} message={toastMessage} duration={2000} onDidDismiss={() => { setToastMessage("") }} />
             <IonAlert
                 isOpen={startDeleting}
-                header="Are you sure?"
+                header="Are you sure ?"
                 message="Do you want to delete the goal? This cannot be undone!"
                 buttons={[
                     {
