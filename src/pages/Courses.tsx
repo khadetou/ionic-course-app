@@ -44,6 +44,7 @@ const Courses: React.FC = () => {
 
     const courseAddHandler = (title: string, date: Date) => {
         addCourse(title, date);
+        setIsAdding(false);
     }
 
     return (
