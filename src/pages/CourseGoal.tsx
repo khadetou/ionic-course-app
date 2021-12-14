@@ -108,7 +108,8 @@ const CourseGoal: React.FC = () => {
                             <IonFabButton color="secondary" onClick={startAddGlobalHandler}>
                                 <IonIcon icon={addOutline} />
                             </IonFabButton>
-                        </IonFab>}
+                        </IonFab>
+                    }
                 </IonContent>
             </IonPage>
         </React.Fragment>
