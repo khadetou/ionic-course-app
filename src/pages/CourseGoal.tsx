@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
-import { IonAlert, IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react'
+import { IonAlert, IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react'
 import { COURSE_DATA } from './Courses';
 import { useParams } from 'react-router';
 import { create, trash, addOutline } from 'ionicons/icons';
 import { isPlatform } from '@ionic/core';
+import EditModals from '../components/EditModals';
+import { KeyObjectType } from 'crypto';
 
 const CourseGoal: React.FC = () => {
     const [startDeleting, setStartDeleting] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [selectedGoal, setSelectedGoal] = useState<null | any>(null);
     const seletedCourseId = useParams<{ courseId: string }>().courseId;
     const selectedCourse = COURSE_DATA.find(course => course.id === seletedCourseId);
     const startDeleteHanlder = () => {
@@ -18,16 +22,28 @@ const CourseGoal: React.FC = () => {
         console.log("Deleting ...");
         setToastMessage('Goal Deleted!');
     }
-    const startEditGlobalHandler = (event: React.MouseEvent) => {
+    const startEditGlobalHandler = (goalId: string, event: React.MouseEvent) => {
         event.stopPropagation();
-        console.log("Start edit global...");
+        const goal = selectedCourse?.goals.find(goal => goal.id === goalId);
+        if (!goal) return;
+        setIsEditing(true);
+        setSelectedGoal(goal);
 
     }
     const startAddGlobalHandler = () => {
-        console.log("Start add global...");
+        setIsEditing(true);
+        setSelectedGoal(null);
+    }
+    const cancelEditGoalHandler = () => {
+        setIsEditing(false);
+        setSelectedGoal(null);
+    }
+    const saveEditGoalHandler = () => {
+
     }
     return (
         <React.Fragment>
+            <EditModals show={isEditing} onCancel={cancelEditGoalHandler} editGoal={selectedGoal} />
             <IonToast isOpen={!!toastMessage} message={toastMessage} duration={2000} onDidDismiss={() => { setToastMessage("") }} />
             <IonAlert
                 isOpen={startDeleting}
@@ -77,7 +93,7 @@ const CourseGoal: React.FC = () => {
                                 </IonButton> */}
                                     </IonItem>
                                     <IonItemOptions side="end">
-                                        <IonItemOption onClick={startEditGlobalHandler}>
+                                        <IonItemOption onClick={startEditGlobalHandler.bind(null, goal.id)}>
                                             <IonIcon slot="icon-only" icon={create} />
                                         </IonItemOption>
                                     </IonItemOptions>
