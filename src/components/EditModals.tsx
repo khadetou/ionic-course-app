@@ -14,7 +14,7 @@ const EditModals: React.FC<IProps> = ({ show, onCancel, editGoal, onSave }) => {
         const enteredText = textRef.current!.value;
 
         if (!enteredText || enteredText.toString().trim().length === 0) {
-            setError("*Please enter a valid text");
+            setError("*Please enter a valid text!");
             return;
         }
 
