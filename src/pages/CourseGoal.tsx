@@ -22,9 +22,11 @@ const CourseGoal: React.FC = () => {
     const seletedCourseId = useParams<{ courseId: string }>().courseId;
 
     const selectedCourse = courses.find(course => course.id === seletedCourseId);
+
     const startDeleteHanlder = (goalId: string) => {
-        selectedGoalIdRef.current = goalId;
+        setToastMessage('');
         setStartDeleting(true);
+        selectedGoalIdRef.current = goalId;
     }
     const deleteGoalHanlder = () => {
         setStartDeleting(false);
@@ -67,7 +69,11 @@ const CourseGoal: React.FC = () => {
                 onSave={addGoalHandler}
                 editGoal={selectedGoal}
             />
-            <IonToast isOpen={!!toastMessage} message={toastMessage} duration={2000} onDidDismiss={() => { setToastMessage("") }} />
+            <IonToast
+                isOpen={!!toastMessage}
+                message={toastMessage}
+                duration={2000}
+            />
             <IonAlert
                 isOpen={startDeleting}
                 header="Are you sure ?"
