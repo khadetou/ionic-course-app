@@ -13,6 +13,7 @@ const EditModals: React.FC<IProps> = ({ show, onCancel, editGoal, onSave }) => {
     const saveHandler = () => {
         const enteredText = textRef.current!.value;
 
+
         if (!enteredText || enteredText.toString().trim().length === 0) {
             setError("*Please enter a valid text");
             return;
@@ -34,7 +35,7 @@ const EditModals: React.FC<IProps> = ({ show, onCancel, editGoal, onSave }) => {
                         <IonCol>
                             <IonItem>
                                 <IonLabel position="floating">Your Goal</IonLabel>
-                                <IonInput type="text" value={editGoal?.text} />
+                                <IonInput ref={textRef} type="text" value={editGoal?.text} />
                             </IonItem>
                         </IonCol>
                     </IonRow>

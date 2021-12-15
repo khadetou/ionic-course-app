@@ -13,7 +13,7 @@ const CourseGoal: React.FC = () => {
     const [toastMessage, setToastMessage] = useState('');
     const [isEditing, setIsEditing] = useState(false);
 
-    const { courses } = useContext(CourseContext);
+    const { courses, addGoal } = useContext(CourseContext);
 
     const [selectedGoal, setSelectedGoal] = useState<null | any>(null);
 
@@ -45,12 +45,18 @@ const CourseGoal: React.FC = () => {
         setIsEditing(false);
         setSelectedGoal(null);
     }
-    const saveEditGoalHandler = () => {
-
+    const addGoalHandler = (text: string) => {
+        addGoal(seletedCourseId, text);
+        setIsEditing(false);
     }
     return (
         <React.Fragment>
-            <EditModals show={isEditing} onCancel={cancelEditGoalHandler} editGoal={selectedGoal} />
+            <EditModals
+                show={isEditing}
+                onCancel={cancelEditGoalHandler}
+                onSave={addGoalHandler}
+                editGoal={selectedGoal}
+            />
             <IonToast isOpen={!!toastMessage} message={toastMessage} duration={2000} onDidDismiss={() => { setToastMessage("") }} />
             <IonAlert
                 isOpen={startDeleting}
