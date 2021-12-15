@@ -1,6 +1,5 @@
 import React, { useState, useRef, useContext } from 'react'
 import { IonAlert, IonBackButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonList, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react'
-import { COURSE_DATA } from './Courses';
 import { useParams } from 'react-router';
 import { addOutline } from 'ionicons/icons';
 import { isPlatform } from '@ionic/core';
@@ -61,6 +60,25 @@ const CourseGoal: React.FC = () => {
         setIsEditing(false);
     }
 
+    let content = <h2 className="ion-text-center">No goals found!</h2>
+    if (!seletedCourseId) {
+        <h2 className="ion-text-center">No Course found!</h2>
+    }
+    if (selectedCourse && selectedCourse.goals.length > 0) {
+        content = (
+            <IonList>
+                {selectedCourse.goals.map(goal => (
+                    <EditGlobalItem
+                        key={goal.id}
+                        onDelete={startDeleteHanlder.bind(null, goal.id)}
+                        onEdit={startEditGlobalHandler.bind(null, goal.id)}
+                        text={goal.text}
+                        slidingRef={slidingOptionsRef}
+                    />
+                ))}
+            </IonList>
+        );
+    }
     return (
         <React.Fragment>
             <EditModals
@@ -103,19 +121,7 @@ const CourseGoal: React.FC = () => {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
-                    {selectedCourse && (
-                        <IonList>
-                            {selectedCourse.goals.map(goal => (
-                                <EditGlobalItem
-                                    key={goal.id}
-                                    onDelete={startDeleteHanlder.bind(null, goal.id)}
-                                    onEdit={startEditGlobalHandler.bind(null, goal.id)}
-                                    text={goal.text}
-                                    slidingRef={slidingOptionsRef}
-                                />
-                            ))}
-                        </IonList>
-                    )}
+                    {content}
                     {isPlatform("android") &&
                         <IonFab horizontal='end' vertical='bottom' slot="fixed" >
                             <IonFabButton color="secondary" onClick={startAddGlobalHandler}>
