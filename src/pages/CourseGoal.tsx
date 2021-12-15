@@ -13,19 +13,22 @@ const CourseGoal: React.FC = () => {
     const [toastMessage, setToastMessage] = useState('');
     const [isEditing, setIsEditing] = useState(false);
 
-    const { courses, addGoal } = useContext(CourseContext);
+    const { courses, addGoal, deleteGoal, updateGoal } = useContext(CourseContext);
 
     const [selectedGoal, setSelectedGoal] = useState<null | any>(null);
 
     const slidingOptionsRef = useRef<HTMLIonItemSlidingElement>(null);
+    const selectedGoalIdRef = useRef<string | null>(null);
     const seletedCourseId = useParams<{ courseId: string }>().courseId;
+
     const selectedCourse = courses.find(course => course.id === seletedCourseId);
-    const startDeleteHanlder = () => {
+    const startDeleteHanlder = (goalId: string) => {
+        selectedGoalIdRef.current = goalId;
         setStartDeleting(true);
     }
     const deleteGoalHanlder = () => {
         setStartDeleting(false);
-        console.log("Deleting ...");
+        deleteGoal(seletedCourseId, selectedGoalIdRef.current!);
         setToastMessage('Goal Deleted!');
     }
     const startEditGlobalHandler = (goalId: string, event: React.MouseEvent) => {
@@ -39,6 +42,7 @@ const CourseGoal: React.FC = () => {
     }
     const startAddGlobalHandler = () => {
         setIsEditing(true);
+
         setSelectedGoal(null);
     }
     const cancelEditGoalHandler = () => {
@@ -46,9 +50,15 @@ const CourseGoal: React.FC = () => {
         setSelectedGoal(null);
     }
     const addGoalHandler = (text: string) => {
-        addGoal(seletedCourseId, text);
+        if (selectedGoal) {
+            updateGoal(seletedCourseId, selectedGoal.id, text);
+        } else {
+            addGoal(seletedCourseId, text);
+        }
+
         setIsEditing(false);
     }
+
     return (
         <React.Fragment>
             <EditModals
@@ -92,7 +102,7 @@ const CourseGoal: React.FC = () => {
                             {selectedCourse.goals.map(goal => (
                                 <EditGlobalItem
                                     key={goal.id}
-                                    onDelete={startDeleteHanlder}
+                                    onDelete={startDeleteHanlder.bind(null, goal.id)}
                                     onEdit={startEditGlobalHandler.bind(null, goal.id)}
                                     text={goal.text}
                                     slidingRef={slidingOptionsRef}

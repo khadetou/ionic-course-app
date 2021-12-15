@@ -32,8 +32,33 @@ const CourseContextProvider: React.FC = ({ children }) => {
             return updatedCourses;
         });
     }
-    const updateGoal = (courseId: string, goalId: string, newText: string) => { }
-    const deleteGoal = (courseId: string, goalId: string) => { }
+    const updateGoal = (courseId: string, goalId: string, newText: string) => {
+        setCourses((curCourses) => {
+            const updatedCourses = [...curCourses];
+            const updatedCourseIndex = updatedCourses.findIndex(course => course.id === courseId);
+            const updatedCourseGoals = updatedCourses[updatedCourseIndex].goals.slice();
+            const updatedCourseGoalIndex = updatedCourseGoals.findIndex(goal => goal.id === goalId);
+            const updatedGoal = { ...updatedCourseGoals[updatedCourseGoalIndex], text: newText };
+            updatedCourseGoals[updatedCourseGoalIndex] = updatedGoal;
+
+            const updatedCourse = { ...updatedCourses[updatedCourseIndex] };
+            updatedCourse.goals = updatedCourseGoals;
+            updatedCourses[updatedCourseIndex] = updatedCourse;
+            return updatedCourses;
+        });
+    }
+
+    const deleteGoal = (courseId: string, goalId: string) => {
+        setCourses((curCourses) => {
+            const updatedCourses = [...curCourses];
+            const updatedCourseIndex = updatedCourses.findIndex(course => course.id === courseId);
+            const updatedCourseGoals = updatedCourses[updatedCourseIndex].goals.filter(goal => goal.id !== goalId);
+            const updatedCourse = { ...updatedCourses[updatedCourseIndex] };
+            updatedCourse.goals = updatedCourseGoals;
+            updatedCourses[updatedCourseIndex] = updatedCourse;
+            return updatedCourses;
+        });
+    }
 
     return (
         <CourseContext.Provider
