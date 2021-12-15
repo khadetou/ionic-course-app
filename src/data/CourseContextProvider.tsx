@@ -5,7 +5,7 @@ import CourseContext, { Course, Goal } from './course-context';
 const CourseContextProvider: React.FC = ({ children }) => {
     const [courses, setCourses] = useState<Course[]>([
         {
-            id: "c1", name: "React - The Complete Guide", enrolled: new Date(), goals: []
+            id: "c1", name: "React - The Complete Guide", enrolled: new Date(), goals: [], included: true,
         }
     ]);
 
@@ -15,6 +15,7 @@ const CourseContextProvider: React.FC = ({ children }) => {
             name: title,
             enrolled: date,
             goals: [],
+            included: true
         }
         setCourses(curCourses => {
             return curCourses.concat(newCourse);
@@ -59,7 +60,15 @@ const CourseContextProvider: React.FC = ({ children }) => {
             return updatedCourses;
         });
     }
-
+    const changeCourseFilter = (courseId: string, isIncluded: boolean) => {
+        setCourses(courses => {
+            const updatedCourseIndex = courses.findIndex(course => course.id === courseId);
+            const updatedCourses = [...courses];
+            const updatedCourse = { ...updatedCourses[updatedCourseIndex], included: isIncluded };
+            updatedCourses[updatedCourseIndex] = updatedCourse;
+            return updatedCourses;
+        });
+    }
     return (
         <CourseContext.Provider
             value={{
@@ -67,7 +76,8 @@ const CourseContextProvider: React.FC = ({ children }) => {
                 addCourse,
                 addGoal,
                 updateGoal,
-                deleteGoal
+                deleteGoal,
+                changeCourseFilter
             }}
         >
             {children}

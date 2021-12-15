@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonTitle, IonToggle, IonToolbar } from '@ionic/react';
 import { COURSE_DATA } from './Courses';
-
+import CourseContext from '../data/course-context';
 
 const Filter: React.FC = () => {
+    const { courses, changeCourseFilter } = useContext(CourseContext);
+
     const courseFilterChangeHandler = (event: CustomEvent) => {
-        console.log(event);
+        changeCourseFilter(event.detail.value, event.detail.checked);
     }
+
     return (
         <IonPage>
             <IonHeader>
@@ -19,10 +22,11 @@ const Filter: React.FC = () => {
             </IonHeader>
             <IonContent>
                 <IonList>
-                    {COURSE_DATA.map((course) => (
+                    {courses.map((course) => (
                         <IonItem key={course.id}>
+
                             <IonLabel>{course.name}</IonLabel>
-                            <IonToggle value={course.id} onIonChange={courseFilterChangeHandler} />
+                            <IonToggle checked={course.included} value={course.id} onIonChange={courseFilterChangeHandler} />
                         </IonItem>
                     ))}
                 </IonList>
